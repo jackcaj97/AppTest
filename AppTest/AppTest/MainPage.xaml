@@ -10,7 +10,36 @@
         <!-- Place new controls here -->
         <Label Text="Welcome to this shit!" 
            HorizontalOptions="Center"
-           VerticalOptions="CenterAndExpand" />
+           VerticalOptions="Center" />
+
+        <Button
+            x:Name="sendData"
+            Text="SendData"
+            HorizontalOptions="Center"
+            />
+
+        <Button
+            AutomationId="readData"
+            Text="ReadJSON"
+            HorizontalOptions="Center"
+            Clicked="readDataJson"
+            />
+
+        <Label
+            x:Name="resultText"
+            Text="Testo"
+            HorizontalOptions="Center"
+            />
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Image x:Name="PhotoImage" />
+            <Button x:Name="CameraButton" Text="Take Photo" Grid.Row="1" />
+        </Grid>
     </StackLayout>
 
 </ContentPage>
