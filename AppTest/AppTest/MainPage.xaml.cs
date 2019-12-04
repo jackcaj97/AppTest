@@ -8,6 +8,7 @@ using Xamarin.Forms;
 
 using Newtonsoft.Json;
 using System.Net.Http;
+using System.Drawing;
 
 namespace AppTest
 {
@@ -48,7 +49,36 @@ namespace AppTest
             var photo = await Plugin.Media.CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions() { });
 
             if (photo != null)
-                PhotoImage.Source = ImageSource.FromStream(() => { return photo.GetStream(); });
+            {
+
+                var photoImage = ImageSource.FromStream(() => { return photo.GetStream(); });
+
+                var content = new MultipartFormDataContent();
+                content.Add(new StreamContent(photo.GetStream()), "\"animalImage\"", $"\"{photo.Path}\"");
+
+                var httpClient = new System.Net.Http.HttpClient();
+                var url = "https://animalguess.azurewebsites.net";
+                // var responseMSG = await httpClient.GetAsync(url);
+                var responseMSG = await httpClient.PostAsync(url, content);
+
+                if (responseMSG.IsSuccessStatusCode) {
+                    var responsePath = await responseMSG.Content.ReadAsStringAsync();
+                    Console.WriteLine(responsePath);
+                }
+                else
+                {
+                    Console.WriteLine("Stica");
+                }
+
+                // Console.WriteLine(photo.Path);
+
+                PhotoImage.Source = photoImage;
+
+                Xamarin.Forms.Image img = new Xamarin.Forms.Image();
+
+            }
+
+            
         }
 
     }
