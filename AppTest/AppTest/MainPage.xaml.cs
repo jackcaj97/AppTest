@@ -79,9 +79,9 @@ namespace AppTest
 
                 // Console.WriteLine(photo.Path);
 
-                PhotoImage.Source = photoImage;
+                // PhotoImage.Source = photoImage;
 
-                Xamarin.Forms.Image img = new Xamarin.Forms.Image();
+                // Xamarin.Forms.Image img = new Xamarin.Forms.Image();
 
             }
 
