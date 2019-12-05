@@ -37,7 +37,7 @@ namespace AppTest
                 var result = await client.GetStringAsync(uri);
 
                 //handling the answer  
-                var posts = JsonConvert.DeserializeObject<List<Post>>(result);
+                var posts = JsonConvert.DeserializeObject<List<Result>>(result);
 
                 Console.WriteLine("posts: " + posts.First());
 
@@ -52,7 +52,8 @@ namespace AppTest
             var photo = await Plugin.Media.CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions() 
             {
                 Directory = "Sample",
-                Name = "test.jpg"
+                Name = "test.jpg",
+                PhotoSize = PhotoSize.Medium
             });
 
             if (photo != null)
@@ -60,15 +61,23 @@ namespace AppTest
 
                 var photoImage = ImageSource.FromStream(() => { return photo.GetStream(); });
 
+                PhotoImage.Source = photoImage;
+
                 try
                 {
 
                     var client = new HttpClient();
 
-                    sendPostImageRequest(client, photo);
+                    var jsonString = await sendPostImageRequest(client, photo);
+
+
+                    Console.WriteLine("JSONSTRING: " + jsonString);
+
+                    var prediction = JsonConvert.DeserializeObject<Result>(jsonString);
+                    resultText.Text = "First post:\n\n" + prediction;
+
 
                     // sendPostTextRequest();
-
                     // sendGetRequest(client);
                 }
                 catch (Exception exception)
@@ -78,8 +87,6 @@ namespace AppTest
                 
 
                 // Console.WriteLine(photo.Path);
-
-                // PhotoImage.Source = photoImage;
 
                 // Xamarin.Forms.Image img = new Xamarin.Forms.Image();
 
@@ -108,17 +115,8 @@ namespace AppTest
             Console.WriteLine("Richiesta Post: " + result.RequestMessage);
         }
 
-        private async void sendPostImageRequest(HttpClient client, MediaFile photo) 
+        private async Task<string> sendPostImageRequest(HttpClient client, MediaFile photo) 
         {
-
-            // StreamContent scontent = new StreamContent(photo.GetStream());
-            
-            //scontent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
-            //{
-            //    FileName = "test.jpg",
-            //    Name = "test"
-            //};
-            //scontent.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
 
             var multi = new MultipartFormDataContent();
             var stream = photo.GetStream();
@@ -131,34 +129,17 @@ namespace AppTest
             multi.Add(imageContent, "test", "test.jpg");
             // multi.Add(scontent);
 
-            var result = client.PostAsync("https://animalguess.azurewebsites.net", multi).Result;
+            var result = await client.PostAsync("https://animalguess.azurewebsites.net", multi);
             // var response = client.PostAsync("https://animalguess.azurewebsites.net", multi);
             // var result = response.Result;
+            var jsonString = await result.Content.ReadAsStringAsync();
+            
+            return jsonString;
 
-            Console.WriteLine("Risposta Richiesta Post: " + result.ReasonPhrase + "---------" + result.ToString());
-            Console.WriteLine("Richiesta Post: " + result.RequestMessage);
-            Console.WriteLine("BODY RISPOSTA: " + result.Content.ReadAsStringAsync().Result);
+            //Console.WriteLine("Risposta Richiesta Post: " + result.ReasonPhrase + "---------" + result.ToString());
+            //Console.WriteLine("Richiesta Post: " + result.RequestMessage);
+            //Console.WriteLine("BODY RISPOSTA: " + jsonString);
 
-            //// var client = new HttpClient();
-            //var form = new MultipartFormDataContent();
-
-            //// form.Headers.ContentType = MediaTypeHeaderValue.Parse("image/jpeg");
-            //form.Add(new StreamContent(photo.GetStream()), "test", "test.jpg");
-
-            //var httpClient = new System.Net.Http.HttpClient();
-            //var url = "https://animalguess.azurewebsites.net";
-            //// var responseMSG = await httpClient.GetAsync(url);
-            //var responseMSG = await httpClient.PostAsync(url, form);
-
-
-            //if (responseMSG.IsSuccessStatusCode) {
-            //    var responsePath = await responseMSG.Content.ReadAsStringAsync();
-            //    Console.WriteLine(responsePath);
-            //}
-            //else
-            //{
-            //    Console.WriteLine("Richiesta: " + responseMSG.RequestMessage);
-            //}
         }
 
         private void sendGetRequest()

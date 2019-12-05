@@ -6,11 +6,11 @@ using Newtonsoft.Json;
 
 namespace AppTest
 {
-    class Post
+    class Prediction
     {
-        public int Id { get; set; }
-        public int UserId { get; set; }
-        public string Title { get; set; }
+        public float probability { get; set; }
+        public string tagId { get; set; }
+        public string tagName { get; set; }
 
         [JsonProperty("body")]
         public string Content { get; set; }
@@ -18,8 +18,8 @@ namespace AppTest
         public override string ToString()
         {
             return string.Format(
-                "Post Id: {0}\nTitle: {1}\nBody: {2}",
-                Id, Title, Content);
+                "Probability: {0}\nTagId: {1}\nTagName: {2}",
+                probability, tagId, tagName);
         }
     }
 }
