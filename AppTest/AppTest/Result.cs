@@ -20,8 +20,15 @@ namespace AppTest
 
         public override string ToString()
         {
+            string predict = "";
+
+            foreach (Prediction p in predictions)
+            {
+                predict = predict + p.ToString() + "\n";
+            }
+
             return string.Format(
-                "Resutlt Id: {0}\nProject: {1}\nIteration: {2}\nCreated: {3}\n" + predictions.ToString(),
+                "Resutlt Id: {0}\nProject: {1}\nIteration: {2}\nCreated: {3}\n" + predict,
                 id, project, iteration, created);
         }
     }
