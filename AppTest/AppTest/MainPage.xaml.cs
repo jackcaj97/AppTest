@@ -73,8 +73,14 @@ namespace AppTest
 
                     Console.WriteLine("JSONSTRING: " + jsonString);
 
-                    var prediction = JsonConvert.DeserializeObject<Result>(jsonString);
-                    resultText.Text = "First post:\n\n" + prediction;
+                    Result result = JsonConvert.DeserializeObject<Result>(jsonString);
+                    List<Prediction> predictionList = result.predictions;
+                    Prediction firstValue = predictionList.ElementAt(0);
+                    Prediction secondValue = predictionList.ElementAt(1);
+
+
+                    resultText.Text = "Animal: " + firstValue.tagName + " - " + secondValue.tagName;
+
 
 
                     // sendPostTextRequest();
