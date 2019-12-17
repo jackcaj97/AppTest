@@ -7,6 +7,7 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using Plugin.CurrentActivity;
+using Xamarin.Auth;
 
 namespace AppTest.Droid
 {
@@ -22,6 +23,9 @@ namespace AppTest.Droid
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            global::Xamarin.Auth.Presenters.XamarinAndroid.AuthenticationConfiguration.Init(this, savedInstanceState);
+            
+            Xamarin.Auth.CustomTabsConfiguration.CustomTabsClosingMessage = null;
 
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
 

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using Xamarin.Auth;
 
 using Newtonsoft.Json;
 using System.Net.Http;
@@ -24,7 +25,42 @@ namespace AppTest
         {
             InitializeComponent();
 
+            string clientId = null;
+            string redirectURI = null;
+
+            switch(Device.RuntimePlatform)
+            {
+                case Device.iOS:
+                    clientId = "829469651959-5giacqvqkr011ghnod42jgnvo4lm0o3i.apps.googleusercontent.com";
+                    redirectURI = "com.googleusercontent.apps.829469651959-5giacqvqkr011ghnod42jgnvo4lm0o3i:/oauth2redirect";
+                    break;
+                case Device.Android:
+                    clientId = "829469651959-uj01l00gc3u3g7d495h1sl9vdms7587f.apps.googleusercontent.com";
+                    redirectURI = "com.googleusercontent.apps.829469651959-uj01l00gc3u3g7d495h1sl9vdms7587f:/oauth2redirect";
+                    break;
+            }
+
+
+
             CameraButton.Clicked += CameraButton_Clicked;
+
+            var authenticator = new OAuth2Authenticator(
+                clientId,
+                null,
+                "https://www.googleapis.com/auth/userinfo.email",
+                new Uri("https://accounts.google.com/o/oauth2/auth"),
+                new Uri(redirectURI),
+                new Uri("https://www.googleapis.com/oauth2/v4/token"),
+                null,
+                true);
+
+            // Successful authentication event
+            authenticator.Completed += OnAuthCompleted;
+
+            AuthenticationState.authenticator = authenticator;
+
+            var presenter = new Xamarin.Auth.Presenters.OAuthLoginPresenter();
+            presenter.Login(authenticator);
         }
 
         public async void readDataJson(object sender, EventArgs e)
@@ -157,5 +193,27 @@ namespace AppTest
             Console.WriteLine(result.ReasonPhrase + "---------" + result.ToString());
         }
 
+
+        // Listener
+        async void OnAuthCompleted(object sender, AuthenticatorCompletedEventArgs e)
+        {
+
+            if (e.IsAuthenticated)
+            {
+                Console.WriteLine("------------ YATTASO: User successfully authenticated!");
+                string UserInfoUrl = "https://www.googleapis.com/oauth2/v2/userinfo";
+                var request = new OAuth2Request("GET", new Uri(UserInfoUrl), null, e.Account);
+                var response = await request.GetResponseAsync();
+                if (response != null)
+                {
+                    string userJson = response.GetResponseText();
+                    Console.WriteLine("JSON User: " + userJson);
+                }
+            }
+            else
+            {
+                Console.WriteLine("--------- WAIT A SECOND: User not authenticated!");
+            }
+        }
     }
 }
