@@ -50,6 +50,7 @@ namespace AppTest
                 Console.WriteLine("JSONSTRING Collection: " + jsonString);
 
                 // Gestire gli oggetti contenuti nel JSON.
+
                 //Result result = JsonConvert.DeserializeObject<Result>(jsonString);
                 //List<Prediction> predictionList = result.predictions;
                 //Prediction firstValue = predictionList.ElementAt(0);
