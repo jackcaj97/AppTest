@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace AppTest
 {
-    class User
+    public class User
     {
         public string id { get; set; }
         public string email { get; set; }

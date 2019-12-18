@@ -4,58 +4,21 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="AppTest.MainPage"
-             xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms">
+             x:Class="AppTest.MainPage">
 
     <StackLayout>
         
-        <Label Text="Welcome to this shit!" 
+        <Label Text="To use this application you need to authenticate with your Google account" 
            HorizontalOptions="Center"
            VerticalOptions="Center" />
 
-        <StackLayout 
-            Orientation="Horizontal">
-
-            <ffimageloading:CachedImage x:Name="CachedImageView"
-                HorizontalOptions="End"
-			    WidthRequest="100" HeightRequest="100"
-			    DownsampleToViewSize="true"/>
-            
-            <Label x:Name="UserEmailLabel"
-                Text="Email: "
-                HorizontalTextAlignment="Center"
-                HorizontalOptions="Start"/>
-
-        </StackLayout>
-        
-        <!--<Button
-            x:Name="sendData"
-            Text="SendData"
+        <Button
+            x:Name="LoginButton"
+            Text="Login with GuruGuru"
             HorizontalOptions="Center"
-            />-->
-
-        <!--<Button
-            AutomationId="readData"
-            Text="ReadJSON"
-            HorizontalOptions="Center"
-            Clicked="readDataJson"
-            />-->
-
-        <Label
-            x:Name="resultText"
-            Text="Results are shown here"
-            HorizontalOptions="Center"
+            VerticalOptions="Center"
             />
-
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-
-            <Image x:Name="PhotoImage" />
-            <Button x:Name="CameraButton" Text="Take Photo" Grid.Row="1" />
-        </Grid>
+        
     </StackLayout>
 
 </ContentPage>
