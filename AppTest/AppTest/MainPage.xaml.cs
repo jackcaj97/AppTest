@@ -13,6 +13,7 @@ using System.Drawing;
 using System.IO;
 using System.Net.Http.Headers;
 using Plugin.Media.Abstractions;
+using FFImageLoading.Forms;
 
 namespace AppTest
 {
@@ -21,6 +22,8 @@ namespace AppTest
     [DesignTimeVisible(false)]
     public partial class MainPage : ContentPage
     {
+        private User user;  // Utente che effettua l'accesso.
+
         public MainPage()
         {
             InitializeComponent();
@@ -63,26 +66,7 @@ namespace AppTest
             presenter.Login(authenticator);
         }
 
-        public async void readDataJson(object sender, EventArgs e)
-        {
-            // await readDataJsonAsync(sender, e);
-            using (var client = new HttpClient())
-            {
-                // send a GET request  
-                var uri = "http://jsonplaceholder.typicode.com/posts";
-                var result = await client.GetStringAsync(uri);
-
-                //handling the answer  
-                var posts = JsonConvert.DeserializeObject<List<Result>>(result);
-
-                Console.WriteLine("posts: " + posts.First());
-
-                // generate the output  
-                var post = posts.First();
-                resultText.Text = "First post:\n\n" + post;
-            }
-        }
-
+        // Listener per il pulsante che permette di scattare una foto.
         private async void CameraButton_Clicked(object sender, EventArgs e)
         {
             var photo = await Plugin.Media.CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions() 
@@ -94,7 +78,6 @@ namespace AppTest
 
             if (photo != null)
             {
-
                 var photoImage = ImageSource.FromStream(() => { return photo.GetStream(); });
 
                 PhotoImage.Source = photoImage;
@@ -103,9 +86,9 @@ namespace AppTest
                 {
 
                     var client = new HttpClient();
+                    client.DefaultRequestHeaders.Add("action", "recognition");
 
                     var jsonString = await sendPostImageRequest(client, photo);
-
 
                     Console.WriteLine("JSONSTRING: " + jsonString);
 
@@ -126,20 +109,77 @@ namespace AppTest
                 {
                     Console.WriteLine(exception);
                 }
-                
-
-                // Console.WriteLine(photo.Path);
-
-                // Xamarin.Forms.Image img = new Xamarin.Forms.Image();
 
             }
 
-            
         }
-        
+
+        // Metodo per l'invio di una richiesta Post contenente un'immagine.
+        private async Task<string> sendPostImageRequest(HttpClient client, MediaFile photo) 
+        {
+
+            var multi = new MultipartFormDataContent();
+            var stream = photo.GetStream();
+            var bytes = new byte[stream.Length];
+            await stream.ReadAsync(bytes, 0, (int)stream.Length);
+            var imageContent = new ByteArrayContent(bytes);
+
+            imageContent.Headers.ContentType = MediaTypeHeaderValue.Parse("image/jpeg");
+
+            multi.Add(imageContent, "image", "image.jpg");
+            // multi.Add(scontent);
+            multi.Add(new StringContent(user.email), "utente");
+
+            var result = await client.PostAsync("https://animalguess.azurewebsites.net", multi);
+            // var response = client.PostAsync("https://animalguess.azurewebsites.net", multi);
+            // var result = response.Result;
+            var jsonString = await result.Content.ReadAsStringAsync();
+            
+            return jsonString;
+
+            //Console.WriteLine("Risposta Richiesta Post: " + result.ReasonPhrase + "---------" + result.ToString());
+            //Console.WriteLine("Richiesta Post: " + result.RequestMessage);
+            //Console.WriteLine("BODY RISPOSTA: " + jsonString);
+
+        }
+
+        // Listener per l'autenticazione.
+        async void OnAuthCompleted(object sender, AuthenticatorCompletedEventArgs e)
+        {
+
+            if (e.IsAuthenticated)
+            {
+                Console.WriteLine("------------ YATTASO: User successfully authenticated!");
+                string UserInfoUrl = "https://www.googleapis.com/oauth2/v2/userinfo";
+                var request = new OAuth2Request("GET", new Uri(UserInfoUrl), null, e.Account);
+                var response = await request.GetResponseAsync();
+                if (response != null)
+                {
+                    string userJson = response.GetResponseText();
+                    // Console.WriteLine("JSON User: " + userJson);
+
+                    user = JsonConvert.DeserializeObject<User>(userJson);
+                    // Console.WriteLine("User: " + user.ToString());
+
+                    UserEmailLabel.Text = "Email: " + user.email;
+                    
+                    // Si imposta la Source del CachedImage
+                    CachedImageView.Source = user.picture;
+
+                }
+            }
+            else
+            {
+                Console.WriteLine("--------- WAIT A SECOND: User not authenticated!");
+            }
+        }
+
+
+
+        // Metodo di invio di una richiesta Post testuale
         private void sendPostTextRequest(HttpClient client)
         {
-            
+
             var robe = new Dictionary<String, String>
                     {
                         {
@@ -157,33 +197,7 @@ namespace AppTest
             Console.WriteLine("Richiesta Post: " + result.RequestMessage);
         }
 
-        private async Task<string> sendPostImageRequest(HttpClient client, MediaFile photo) 
-        {
-
-            var multi = new MultipartFormDataContent();
-            var stream = photo.GetStream();
-            var bytes = new byte[stream.Length];
-            await stream.ReadAsync(bytes, 0, (int)stream.Length);
-            var imageContent = new ByteArrayContent(bytes);
-
-            imageContent.Headers.ContentType = MediaTypeHeaderValue.Parse("image/jpeg");
-
-            multi.Add(imageContent, "test", "test.jpg");
-            // multi.Add(scontent);
-
-            var result = await client.PostAsync("https://animalguess.azurewebsites.net", multi);
-            // var response = client.PostAsync("https://animalguess.azurewebsites.net", multi);
-            // var result = response.Result;
-            var jsonString = await result.Content.ReadAsStringAsync();
-            
-            return jsonString;
-
-            //Console.WriteLine("Risposta Richiesta Post: " + result.ReasonPhrase + "---------" + result.ToString());
-            //Console.WriteLine("Richiesta Post: " + result.RequestMessage);
-            //Console.WriteLine("BODY RISPOSTA: " + jsonString);
-
-        }
-
+        // Metodo di invio di una richiesta Get.
         private void sendGetRequest()
         {
 
@@ -193,26 +207,26 @@ namespace AppTest
             Console.WriteLine(result.ReasonPhrase + "---------" + result.ToString());
         }
 
-
-        // Listener
-        async void OnAuthCompleted(object sender, AuthenticatorCompletedEventArgs e)
+        /**
+         * Metodo tester per il prelievo di un oggetto JSON.
+         */
+        public async void readDataJson(object sender, EventArgs e)
         {
+            // await readDataJsonAsync(sender, e);
+            using (var client = new HttpClient())
+            {
+                // send a GET request  
+                var uri = "http://jsonplaceholder.typicode.com/posts";
+                var result = await client.GetStringAsync(uri);
 
-            if (e.IsAuthenticated)
-            {
-                Console.WriteLine("------------ YATTASO: User successfully authenticated!");
-                string UserInfoUrl = "https://www.googleapis.com/oauth2/v2/userinfo";
-                var request = new OAuth2Request("GET", new Uri(UserInfoUrl), null, e.Account);
-                var response = await request.GetResponseAsync();
-                if (response != null)
-                {
-                    string userJson = response.GetResponseText();
-                    Console.WriteLine("JSON User: " + userJson);
-                }
-            }
-            else
-            {
-                Console.WriteLine("--------- WAIT A SECOND: User not authenticated!");
+                //handling the answer  
+                var posts = JsonConvert.DeserializeObject<List<Result>>(result);
+
+                Console.WriteLine("posts: " + posts.First());
+
+                // generate the output  
+                var post = posts.First();
+                resultText.Text = "First post:\n\n" + post;
             }
         }
     }

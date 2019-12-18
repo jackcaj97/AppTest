@@ -23,6 +23,8 @@ namespace AppTest.Droid
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            FFImageLoading.Forms.Platform.CachedImageRenderer.Init(enableFastRenderer:true);
+            FFImageLoading.Forms.Platform.CachedImageRenderer.InitImageViewHandler();
             global::Xamarin.Auth.Presenters.XamarinAndroid.AuthenticationConfiguration.Init(this, savedInstanceState);
             
             Xamarin.Auth.CustomTabsConfiguration.CustomTabsClosingMessage = null;

@@ -25,6 +25,8 @@ namespace AppTest.iOS
         {
 
             global::Xamarin.Forms.Forms.Init();
+            FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
+            FFImageLoading.Forms.Platform.CachedImageRenderer.InitImageSourceHandler();
             global::Xamarin.Auth.Presenters.XamarinIOS.AuthenticationConfiguration.Init();
             LoadApplication(new App());
 
@@ -37,7 +39,7 @@ namespace AppTest.iOS
             var uri = new Uri(url.AbsoluteString);
 
             // Load redirectUrl page
-            AuthenticationState.Authenticator.OnPageLoading(uri);
+            AuthenticationState.authenticator.OnPageLoading(uri);
             
             return true;
         }
