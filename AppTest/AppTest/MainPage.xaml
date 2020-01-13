@@ -4,22 +4,17 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="AppTest.MainPage" BackgroundColor="#4E4E4E"
->
+             x:Class="AppTest.MainPage">
 
-    <StackLayout VerticalOptions="CenterAndExpand">
+    <StackLayout>
         
         <Label Text="To use this application you need to authenticate with your Google account" 
            HorizontalOptions="Center"
-           TextColor="White"
-           VerticalOptions="Center" Margin="20,0,20,15" VerticalTextAlignment="Start" HorizontalTextAlignment="Center" FontSize="Large" />
+           VerticalOptions="Center" />
 
         <Button
             x:Name="LoginButton"
-            Text="Login with Google"
-            TextColor="White"
-            BorderColor="White"
-            BackgroundColor="#262525"
+            Text="Login with GuruGuru"
             HorizontalOptions="Center"
             VerticalOptions="Center"
             />

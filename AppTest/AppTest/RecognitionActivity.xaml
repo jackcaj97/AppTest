@@ -4,7 +4,6 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             BackgroundColor="#4E4E4E"
              x:Class="AppTest.RecognitionActivity"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms">
     <ContentPage.Content>
@@ -15,10 +14,9 @@
 
                 <ffimageloading:CachedImage x:Name="CachedImageView"
 			    WidthRequest="100" HeightRequest="100"
-			    DownsampleToViewSize="true" Margin="10,10,0,0"/>
+			    DownsampleToViewSize="true"/>
 
                 <Label x:Name="UserEmailLabel"
-                TextColor="White"
                 Text=""
                 HorizontalTextAlignment="Center"/>
 
@@ -27,15 +25,11 @@
             <Button
                 x:Name="GetCollectionButton"
                 Text="My Collection"
-                TextColor="White"
-                BorderColor="White"
-                BackgroundColor="#262525"
                 HorizontalOptions="Center"
                 VerticalOptions="Center"
             />
 
             <Label
-                TextColor="White"
                 x:Name="resultText"
                 Text="Results: "
                 HorizontalOptions="Center"
@@ -48,9 +42,7 @@
                 </Grid.RowDefinitions>
 
                 <Image x:Name="PhotoImage" />
-                <Button x:Name="CameraButton" Text="Take Photo" Grid.Row="1"                 TextColor="White"
-                BorderColor="White"
-                BackgroundColor="#262525"/>
+                <Button x:Name="CameraButton" Text="Take Photo" Grid.Row="1" />
             </Grid>
         </StackLayout>
     </ContentPage.Content>
