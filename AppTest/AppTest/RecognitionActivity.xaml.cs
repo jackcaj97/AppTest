@@ -60,7 +60,7 @@ namespace AppTest
 
                     var client = new HttpClient();
                     client.DefaultRequestHeaders.Add("action", "recognition");
-
+                    resultText.Text = "Result";
                     var jsonString = await sendPostImageRequest(client, photo);
 
                     Console.WriteLine("JSONSTRING: " + jsonString);
@@ -76,7 +76,10 @@ namespace AppTest
                         Prediction firstValue = predictionList.ElementAt(0);
                         Prediction secondValue = predictionList.ElementAt(1);
 
-                        resultText.Text = "Animal: " + firstValue.tagName + " - " + secondValue.tagName;
+                        if (secondValue.probability > 0.50)
+                            resultText.Text = "Animal: " + firstValue.tagName + " - " + secondValue.tagName;
+                        else
+                            resultText.Text = "Animal: " + firstValue.tagName;
                     }
 
                     // sendPostTextRequest();
