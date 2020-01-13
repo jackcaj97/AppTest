@@ -65,15 +65,19 @@ namespace AppTest
 
                     Console.WriteLine("JSONSTRING: " + jsonString);
 
-                    Result result = JsonConvert.DeserializeObject<Result>(jsonString);
-                    List<Prediction> predictionList = result.predictions;
-                    Prediction firstValue = predictionList.ElementAt(0);
-                    Prediction secondValue = predictionList.ElementAt(1);
+                    if(jsonString.Equals("Pretty nice this picture"))
+                    {
+                        resultText.Text = "" + jsonString;
+                    }
+                    else
+                    {
+                        Result result = JsonConvert.DeserializeObject<Result>(jsonString);
+                        List<Prediction> predictionList = result.predictions;
+                        Prediction firstValue = predictionList.ElementAt(0);
+                        Prediction secondValue = predictionList.ElementAt(1);
 
-
-                    resultText.Text = "Animal: " + firstValue.tagName + " - " + secondValue.tagName;
-
-
+                        resultText.Text = "Animal: " + firstValue.tagName + " - " + secondValue.tagName;
+                    }
 
                     // sendPostTextRequest();
                     // sendGetRequest(client);
