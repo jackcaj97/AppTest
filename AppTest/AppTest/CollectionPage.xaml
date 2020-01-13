@@ -11,20 +11,33 @@
             <StackLayout 
             Orientation="Horizontal">
 
-                <ffimageloading:CachedImage x:Name="CachedImageView"
-			    WidthRequest="100" HeightRequest="100"
-			    DownsampleToViewSize="true"/>
+                <ListView 
+                    x:Name="lvCollection"
+                    SeparatorVisibility="Default"
+                    Header="Collection"
+                    ItemsSource="{Binding CollectionImages}">
+                    
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout Margin="1" Orientation="Horizontal">
+                                    <ffimageloading:CachedImage x:Name="CachedImageView"
+			                            WidthRequest="100" HeightRequest="100"
+			                            DownsampleToViewSize="true"
+                                        Source="{Binding imageUrl}"/>
+                                    <Label Text="{Binding tag1}"/>
+                                    <Label Text="{Binding tag2}"/>
+                                </StackLayout>
+                                <ViewCell.ContextActions>
+                                    <MenuItem Text="test"></MenuItem>
+                                </ViewCell.ContextActions>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
 
-                <Label x:Name="UserEmailLabel"
-                Text=""
-                HorizontalTextAlignment="Center"/>
-
+                </ListView>
             </StackLayout>
 
-            <Label Text="Collection:"
-                   HorizontalOptions="Start"
-                   />
-            
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

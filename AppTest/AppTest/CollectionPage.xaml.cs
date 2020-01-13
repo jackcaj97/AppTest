@@ -15,6 +15,7 @@ using System.Net.Http.Headers;
 using Plugin.Media.Abstractions;
 using FFImageLoading.Forms;
 using Xamarin.Forms.Xaml;
+using System.Collections.ObjectModel;
 
 namespace AppTest
 {
@@ -22,17 +23,23 @@ namespace AppTest
     public partial class CollectionPage : ContentPage
     {
         private User user;  // Utente che effettua l'accesso.
+        private ListView lvImageCollection;
+
+        private ObservableCollection<CollectionImage> _collectionImages;
+        public ObservableCollection<CollectionImage> CollectionImages
+        {
+            get
+            {
+                return _collectionImages ?? (_collectionImages = new ObservableCollection<CollectionImage>());
+            }
+        }
 
         public CollectionPage()
         {
             InitializeComponent();
 
             user = UserState.user;
-
-            UserEmailLabel.Text = user.email;
-
-            // Si imposta la Source del CachedImage
-            CachedImageView.Source = user.picture;
+            lvImageCollection = lvCollection;
 
             requestCollection();
         }
@@ -46,16 +53,17 @@ namespace AppTest
                 client.DefaultRequestHeaders.Add("action", "collection");
 
                 var jsonString = await sendPostRequest(client);
-
                 Console.WriteLine("JSONSTRING Collection: " + jsonString);
 
-                // Gestire gli oggetti contenuti nel JSON.
+                List<CollectionImage> collection = JsonConvert.DeserializeObject<List<CollectionImage>>(jsonString);
 
-                //Result result = JsonConvert.DeserializeObject<Result>(jsonString);
-                //List<Prediction> predictionList = result.predictions;
-                //Prediction firstValue = predictionList.ElementAt(0);
-                //Prediction secondValue = predictionList.ElementAt(1);
+                foreach(CollectionImage image in collection)
+                {
+                    CollectionImages.Add(image);
+                    Console.WriteLine(""+image.ToString());
+                }
 
+                lvCollection.ItemsSource = CollectionImages;
             }
             catch (Exception exception)
             {
