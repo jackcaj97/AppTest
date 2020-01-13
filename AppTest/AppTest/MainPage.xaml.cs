@@ -96,7 +96,7 @@ namespace AppTest
             }
             else
             {
-                Console.WriteLine("--------- WAIT A SECOND: User not authenticated!");
+                Console.WriteLine("--------- WAIT A SECOND: User not authenticated! --- ");
             }
         }
 
@@ -106,10 +106,10 @@ namespace AppTest
             Application.Current.Quit();
         }
 
-        private async void TryGoogleLogin(object sender, EventArgs e)
+        private void TryGoogleLogin(object sender, EventArgs e)
         {
-            var presenter = new Xamarin.Auth.Presenters.OAuthLoginPresenter();
-            presenter.Login(AuthenticationState.authenticator);
+            var app = App.Current;
+            app.MainPage = new MainPage();
         }
     }
 }
