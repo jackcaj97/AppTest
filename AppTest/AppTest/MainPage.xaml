@@ -13,7 +13,7 @@
         <Label Text="To use this application you need to authenticate with your Google account" 
            HorizontalOptions="Center"
            TextColor="White"
-           VerticalOptions="Center" Margin="20,0,20,10" HorizontalTextAlignment="Center" />
+           VerticalOptions="Center" Margin="20,0,20,10" HorizontalTextAlignment="Center" FontSize="Large" />
 
         <Button
             x:Name="LoginButton"
