@@ -123,11 +123,13 @@ namespace AppTest
 
         }
 
-        private void GetCollection(object sender, EventArgs e)
+        private async void GetCollection(object sender, EventArgs e)
         {
+            //var app = App.Current;
+            //app.MainPage = new CollectionPage();
+
             // Si aggiorna la ContentPage in esecuzione.
-            var app = App.Current;
-            app.MainPage = new CollectionPage();
+            await Navigation.PushAsync(new CollectionPage());
         }
     }
 }

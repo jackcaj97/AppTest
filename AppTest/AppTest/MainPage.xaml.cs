@@ -87,7 +87,7 @@ namespace AppTest
 
                     // Si aggiorna la ContentPage in esecuzione.
                     var app = App.Current;
-                    app.MainPage = new RecognitionActivity();
+                    app.MainPage = new NavigationPage(new RecognitionActivity());
                 }
                 else
                 {
