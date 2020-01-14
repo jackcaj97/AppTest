@@ -58,11 +58,15 @@ namespace AppTest
             // Successful authentication event
             authenticator.Completed += OnAuthCompleted;
             authenticator.Error += OnAuthError;
-
+            authenticator.BrowsingCompleted += OnBrowsingCompleted;
             AuthenticationState.authenticator = authenticator;
 
             var presenter = new Xamarin.Auth.Presenters.OAuthLoginPresenter();
             presenter.Login(authenticator);
+        }
+
+        private void OnBrowsingCompleted(object sender, EventArgs e)
+        {
         }
 
         // Listener per l'autenticazione.
@@ -71,6 +75,9 @@ namespace AppTest
             // Se l'utente è stato autenticato con successo si tenta di accedere alle informazioni dell'account Google tramite una richiesta GET.
             if (e.IsAuthenticated)
             {
+                NotLogged.IsVisible = false;
+                LoadContainer.IsVisible = true;
+                IsLoading.IsRunning = true;
                 Console.WriteLine("------------ YATTASO: User successfully authenticated!");
                 string UserInfoUrl = "https://www.googleapis.com/oauth2/v2/userinfo";
                 var request = new OAuth2Request("GET", new Uri(UserInfoUrl), null, e.Account);
@@ -87,7 +94,9 @@ namespace AppTest
 
                     // Si aggiorna la ContentPage in esecuzione.
                     var app = App.Current;
-                    app.MainPage = new NavigationPage(new RecognitionActivity());
+                    var navPage = new NavigationPage(new RecognitionActivity());
+                    navPage.BarBackgroundColor = Xamarin.Forms.Color.SkyBlue;
+                    app.MainPage = navPage;
                 }
                 else
                 {

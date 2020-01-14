@@ -5,14 +5,25 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="AppTest.MainPage"
-                          BackgroundColor="#646363"
+                          BackgroundColor="#White"
 >
+    <StackLayout>
+    <StackLayout Orientation="Vertical" VerticalOptions="Start" IsVisible="False" x:Name="LoadContainer" Margin="0,50,0,0">
+        <Label FontSize="50" HorizontalTextAlignment="Center" TextColor="Black">
+            Welcome to AnimalGuess
+        </Label>
+        <ActivityIndicator x:Name="IsLoading" Color="#486CFF" IsRunning="True"/>
 
-    <StackLayout HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
+        </StackLayout>
+    
+    <StackLayout HorizontalOptions="Center" VerticalOptions="CenterAndExpand" x:Name="NotLogged">
+
+        
+        
         
         <Label Text="To use this application you need to authenticate with your Google account" 
            HorizontalOptions="Center"
-           TextColor="White"
+           TextColor="#191818"
            VerticalOptions="Center" Margin="20,0,20,10" HorizontalTextAlignment="Center" FontSize="Large" />
 
         <Button
@@ -26,5 +37,5 @@
             />
         
     </StackLayout>
-
+    </StackLayout>
 </ContentPage>

@@ -4,7 +4,6 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             BackgroundColor="#646363"
              x:Class="AppTest.RecognitionActivity"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms">
     <ContentPage.Content>
@@ -18,7 +17,7 @@
 			    DownsampleToViewSize="true" Margin="10,10,0,0"/>
 
                 <Label x:Name="UserEmailLabel"
-                       TextColor="White"
+                       TextColor="Black"
                 Text=""
                 HorizontalTextAlignment="Center"/>
 

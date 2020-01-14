@@ -4,16 +4,15 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             BackgroundColor="#646363"
              x:Class="AppTest.CollectionPage"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms">
     <ContentPage.Content>
         <StackLayout>
             <StackLayout 
             Orientation="Vertical">
-                <Label 
-                TextColor="White"
-                Text="Collection"
+                <Label TextColor="#080808"
+                       Text="Collection"
+                    
                 FontSize="Title"
                 HorizontalTextAlignment="Center"/>
                 <ListView 
@@ -31,8 +30,8 @@
                                         Source="{Binding imageUrl}" Margin="10"/>
                                     <StackLayout Orientation="Vertical" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
 
-                                        <Label Text="{Binding tag1}"   TextColor="White" FontSize="Large"/>
-                                        <Label Text="{Binding tag2}"   TextColor="White" FontSize="Large"/>
+                                        <Label Text="{Binding tag1}"   TextColor="Black" FontSize="Large"/>
+                                        <Label Text="{Binding tag2}"   TextColor="Black" FontSize="Large"/>
                                     </StackLayout>
                                 </StackLayout>
                                 <ViewCell.ContextActions>
