@@ -13,12 +13,12 @@
             Orientation="Horizontal">
 
                 <ffimageloading:CachedImage x:Name="CachedImageView"
-			    WidthRequest="100" HeightRequest="100"
+			    WidthRequest="50" HeightRequest="50"
 			    DownsampleToViewSize="true" Margin="10,10,0,0"/>
 
                 <Label x:Name="UserEmailLabel"
                        TextColor="Black"
-                Text=""
+                Text="" VerticalTextAlignment="Center"
                 HorizontalTextAlignment="Center"/>
 
             </StackLayout>
@@ -35,7 +35,7 @@
 
             <Label
                 x:Name="resultText"
-                TextColor="White"
+                TextColor="Black"
                 Text="Results: "
                 HorizontalOptions="Center"
             />
